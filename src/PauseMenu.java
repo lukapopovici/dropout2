@@ -2,34 +2,48 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PauseMenu extends JPanel {
+//MENIU PENTRU STAREA DE PAUZA
+public class PauseMenu extends JPanel implements Menu {
     private List<Button> buttons;
     private JFrame frame;
     protected Boolean Over = null;
 
+    private SQLiteDBCreator dbCreator;
     protected State Altered = null;
     public PauseMenu() {
         buttons = new ArrayList<>();
         buttons.add(new Button("Resume", 450, 100, 100, 50));
-        buttons.add(new Button("Load Game", 450, 200, 100, 50));
-        buttons.add(new Button("Quit", 450, 300, 100, 50));
-        buttons.add(new Button("Settings", 450, 400, 100, 50));
+        buttons.add(new Button("Save Game", 450, 200, 100, 50));
+        buttons.add(new Button("Load Game", 450, 300, 100, 50));
+        buttons.add(new Button("Quit", 450, 400, 100, 50));
+        buttons.add(new Button("Settings", 450, 500, 100, 50));
 
         initializeFrame();
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                handleMouseClick(e.getX(), e.getY());
+                try {
+                    handleMouseClick(e.getX(), e.getY());
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         setPreferredSize(new Dimension(1000, 1000));
         Altered=State.PAUSE;
         Over=false;
+        try {
+            dbCreator = SQLiteDBCreator.getInstance("jdbc:sqlite:database.db");
+            dbCreator.displayAllRecords();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -44,7 +58,7 @@ public class PauseMenu extends JPanel {
         frame.setVisible(true);
     }
 
-    private void handleMouseClick(int x, int y) {
+    public void handleMouseClick(int x, int y) throws SQLException {
         for (Button button : buttons) {
             if (button.isClicked(x, y)) {
                 doAction(button.getLabel());
@@ -52,12 +66,21 @@ public class PauseMenu extends JPanel {
         }
     }
 
-    protected void doAction(String action) {
+    public void doAction(String action) throws SQLException {
         SetOverTrue();
         switch (action) {
             case "Resume":
                 System.out.println("sadasd");
                 Altered=State.GAME;
+                break;
+            case "Save Game":
+                int unixTime = (int) (System.currentTimeMillis() / 1000L);
+                dbCreator.addRecord(unixTime,Arena.getInstance().GetIndex(),Arena.getInstance().BuildLevelLayout());
+                Altered=State.GAME;
+                break;
+            case "Load Game":
+                System.out.println("sadasd");
+                Altered=State.LOAD;
                 break;
             case "Quit":
                 System.out.println("sadasd");
@@ -66,12 +89,12 @@ public class PauseMenu extends JPanel {
         }
     }
 
-    private void SetOverTrue() {
+    public void SetOverTrue() {
         Over=true;
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (Button button : buttons) {
             button.draw(g);

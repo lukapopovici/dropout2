@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
+//SEALED CLASS PENTRU STATEURILE IN CARE POATE FI O ENTITATE DE TIP HUMAN
 enum HumanState {
     IDLE,
     WALK_FORWARD,
@@ -10,16 +10,19 @@ enum HumanState {
     HITTING_RIGHT,
     DEATH
 }
+//CLASA PENTRU "OAMENI". ENTITATI CARE SE POT MISCA SI CARE FOLOSESC ANIMATII
+//FOLOSIT PRIMAR PENTRU MANAGEMENT DE ANIMATII
 abstract public class Human implements Entity{
     protected int HitPoints;
+    protected Boolean IsAlive;
     protected HumanState CurrentState;
 
     protected HumanState NextState;
    protected BufferedImage animationImage;
     protected BufferedImage IdleImage;
-    protected int verticalSpeedMult;
+    protected float verticalSpeedMult;
 
-    protected int horizontalSpeedMult;
+    protected float horizontalSpeedMult;
     protected BufferedImage WalkImage;
     protected BufferedImage VerticalImage;
     protected BufferedImage AttackImage;
@@ -65,7 +68,16 @@ abstract public class Human implements Entity{
         currentFrameIndex = (currentFrameIndex + 1) % FRAME_COUNT;
     }
 
-    public abstract void WasTouched();
+    public abstract void WasTouched(Entity e);
 
     public abstract void Delete();
+
+    public void KillMe(){
+        IsAlive=false;
+        this.NextState=HumanState.IDLE;
+    }
+
+    public Boolean CheckAlive(){
+        return IsAlive;
+    }
 }

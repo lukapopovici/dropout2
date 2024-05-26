@@ -5,8 +5,9 @@ public interface Entity {
     int GetDrawPriority();
     void Draw(Graphics g);
     int getY();
-
+    public int getWidth();
+    public int getHeight();
     int getX();
-    void WasTouched();
+    void WasTouched(Entity e);
     void Delete();
 }

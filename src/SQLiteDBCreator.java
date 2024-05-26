@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+//SINGLETON PENTRU ACCESAREA BAZEI DE DATE DE CATRE CELELALTE COMPONENTE ALE JOCULUI
 public class SQLiteDBCreator {
     private static SQLiteDBCreator instance;
     private Connection conn;
@@ -13,6 +13,7 @@ public class SQLiteDBCreator {
     }
 
     public static synchronized SQLiteDBCreator getInstance(String url) throws SQLException, ClassNotFoundException {
+
         if (instance == null) {
             instance = new SQLiteDBCreator(url);
         }
@@ -83,9 +84,9 @@ public class SQLiteDBCreator {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 CustomRecord record = new CustomRecord(
-                        rs.getString("Label"),
-                        rs.getString("Data1"),
-                        rs.getString("Data2")
+                        rs.getString("Date"),
+                        rs.getInt("Score"),
+                        rs.getString("Layout")
                 );
                 lastFiveRecords.add(record);
             }
@@ -93,5 +94,29 @@ public class SQLiteDBCreator {
         return lastFiveRecords;
     }
 
+    public CustomRecord getRecordByDate(String date) throws SQLException {
+        String sql = "SELECT * FROM Ranking WHERE Date = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, date);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return new CustomRecord(
+                            rs.getString("Date"),
+                            rs.getInt("Score"),
+                            rs.getString("Layout")
+                    );
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    public synchronized void DELETE() throws SQLException {
+        String sql = "DROP TABLE IF EXISTS Ranking";
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        }
+    }
 
 }

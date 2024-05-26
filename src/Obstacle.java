@@ -1,5 +1,6 @@
 import java.awt.*;
 
+//CLASA PENTRU OBSTACOLE, OBIECTE REPREZENTATE CA ENTITATI PE ECRAN CARE NU SUNT INAMICI
 public class Obstacle implements Entity {
     private int X;
     private int Y;
@@ -48,7 +49,7 @@ public class Obstacle implements Entity {
     }
 
     @Override
-    public void WasTouched() {
+    public void WasTouched(Entity e) {
     }
 
     @Override

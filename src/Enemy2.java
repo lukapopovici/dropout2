@@ -4,14 +4,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Enemy extends Human {
+public class Enemy2 extends Enemy {
     private int TargetX, TargetY;
-    private Startegie S;
-    public Enemy(int x, int y) {
-        this(x, y, 1.0f, 1.0f);
+
+    public Enemy2(int x, int y) {
+        this(x, y, 2.0f, 2.0f);
     }
 
-    public Enemy(int x, int y, float vertSpeed, float horSpeed) {
+    public Enemy2(int x, int y, float vertSpeed, float horSpeed) {
+        super( x,  y, vertSpeed,  horSpeed);
         this.X = x;
         this.Y = y;
         this.IsAlive=true;
@@ -20,16 +21,15 @@ public class Enemy extends Human {
         this.TurnedLeft = false;
         this.CurrentState = HumanState.IDLE;
         this.NextState = HumanState.IDLE;
-        this.S = new FollowPlayer();
         loadImages();
     }
 
     private void loadImages() {
         try {
-            this.IdleImage = ImageIO.read(new File("Assets/WildZombie/Idle.png"));
-            this.WalkImage = ImageIO.read(new File("Assets/WildZombie/Walk.png"));
-            this.VerticalImage = ImageIO.read(new File("Assets/WildZombie/Jump.png"));
-            this.AttackImage = ImageIO.read(new File("Assets/WildZombie/Attack_1.png"));
+            this.IdleImage = ImageIO.read(new File("Assets/ZombieMan/Idle.png"));
+            this.WalkImage = ImageIO.read(new File("Assets/ZombieMan/Walk.png"));
+            this.VerticalImage = ImageIO.read(new File("Assets/ZombieMan/Jump.png"));
+            this.AttackImage = ImageIO.read(new File("Assets/ZombieMan/Attack_1.png"));
             this.FRAME_COUNT = 9;
             BufferedImage animationImage = IdleImage;
             int frameWidth = animationImage.getWidth() / FRAME_COUNT;
@@ -56,30 +56,30 @@ public class Enemy extends Human {
             FRAME_COUNT = 0;
             switch (NextState) {
                 case HumanState.WALK_FORWARD:
-                    FRAME_COUNT = 10;
+                    FRAME_COUNT = 8;
                     animationImage = WalkImage;
                     this.TurnedLeft = false;
                     break;
                 case HumanState.IDLE:
-                    FRAME_COUNT = 9;
+                    FRAME_COUNT = 8;
                     animationImage = IdleImage;
                     break;
                 case HumanState.WALK_BACKWARD:
-                    FRAME_COUNT = 10;
+                    FRAME_COUNT = 8;
                     animationImage = WalkImage;
                     this.TurnedLeft = true;
                     break;
                 case HumanState.WALK_VERT:
-                    FRAME_COUNT = 6;
+                    FRAME_COUNT = 8;
                     animationImage = VerticalImage;
                     break;
                 case HumanState.HITTING_RIGHT:
-                    FRAME_COUNT = 4;
+                    FRAME_COUNT = 5;
                     animationImage = AttackImage;
                     this.TurnedLeft = false;
                     break;
                 case HumanState.HITTING_LEFT:
-                    FRAME_COUNT = 4;
+                    FRAME_COUNT = 5;
                     animationImage = AttackImage;
                     this.TurnedLeft = true;
                     break;
@@ -118,9 +118,6 @@ public class Enemy extends Human {
         if (e instanceof Player) {
             KillMe();
         }
-        if (e instanceof Consumable){
-            this.speed*=2;
-        }
     }
 
     @Override
@@ -133,13 +130,30 @@ public class Enemy extends Human {
         this.TargetY = y;
     }
 
-    public void setMovementStrategy(Startegie strategy) {
-        this.S = strategy;
+    public void Move() {
+        double deltaX = Math.abs(TargetX - X);
+        double deltaY = Math.abs(TargetY - Y);
+
+        if (deltaX > deltaY) {
+            if (X < TargetX) {
+                X += speed * horizontalSpeedMult;
+                this.NextState = HumanState.WALK_FORWARD;
+            } else if (X > TargetX) {
+                X -= speed * horizontalSpeedMult;
+                TurnedLeft = true;
+                this.NextState = HumanState.WALK_BACKWARD;
+            }
+        } else {
+            if (Y < TargetY) {
+                Y += speed * verticalSpeedMult;
+            } else if (Y > TargetY) {
+                Y -= speed * verticalSpeedMult;
+                TurnedLeft = true;
+            }
+            this.NextState = HumanState.WALK_VERT;
+        }
     }
 
-    public void Move() {
-        S.move(this, TargetX, TargetY);
-    }
     @Override
     public int getWidth() {
         return 40;
@@ -148,33 +162,5 @@ public class Enemy extends Human {
     @Override
     public int getHeight() {
         return 40;
-    }
-
-    public void setTurnedLeft(boolean b) {
-        this.TurnedLeft=b;
-    }
-
-    public void setNextState(HumanState humanState) {
-        this.NextState=humanState;
-    }
-
-    public void setX(int i) {
-        this.X=i;
-    }
-
-    public void setY(int i) {
-        this.Y=i;
-    }
-
-    public float getVerticalSpeedMult() {
-        return this.verticalSpeedMult;
-    }
-
-    public float getHorizontalSpeedMult() {
-        return this.horizontalSpeedMult;
-    }
-
-    public double GetSpeed() {
-        return this.speed;
     }
 }

@@ -3,12 +3,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+//COD PENTRU CLASA JUCATOR
+//MAXIM 2 INSTANTE POSIBILE
 public class Player extends Human {
 
     public Player(int x, int y) {
         this.X = x;
         this.Y = y;
+        this.IsAlive=true;
         this.verticalSpeedMult=3;
         this.horizontalSpeedMult=2;
         this.TurnedLeft=false;
@@ -94,34 +96,61 @@ public class Player extends Human {
         }
     }
     @Override
-    public void WasTouched() {
+    public void WasTouched(Entity e) {
+        if (e instanceof Enemy) {
+            Enemy enemy = (Enemy) e;
+            if (CurrentState != HumanState.HITTING_LEFT && CurrentState != HumanState.HITTING_RIGHT) {
+                KillMe();
+            } else if (CurrentState == HumanState.HITTING_LEFT && enemy.getX() > getX()) {
+                KillMe();
+            } else if (CurrentState == HumanState.HITTING_RIGHT && enemy.getX() < getX()) {
+                KillMe();
+            }
+        }
+        if (e instanceof Player) {
+            IsAlive=true;
+        }
+        if (e instanceof Consumable) {
+             this.speed*=2;
+        }
+
     }
+
+
 
     @Override
     public void Delete() {
     }
 
     public void MoveUp() {
-        this.NextState=HumanState.WALK_VERT;
-        this.Y -= this.speed *  verticalSpeedMult;
+        if(this.IsAlive) {
+            this.NextState = HumanState.WALK_VERT;
+            this.Y -= this.speed * verticalSpeedMult;
+        }
     }
 
     public void MoveDown() {
-        this.NextState=HumanState.WALK_VERT;
-        this.Y += this.speed * verticalSpeedMult;
+        if(this.IsAlive) {
+            this.NextState = HumanState.WALK_VERT;
+            this.Y += this.speed * verticalSpeedMult;
+        }
     }
 
     public void MoveLeft() {
-        this.NextState=HumanState.WALK_BACKWARD;
-        this.X -= this.speed * horizontalSpeedMult;
+        if(this.IsAlive) {
+            this.NextState = HumanState.WALK_BACKWARD;
+            this.X -= this.speed * horizontalSpeedMult;
+        }
     }
 
     public void SetIdle(){
         this.NextState=HumanState.IDLE;
     }
     public void MoveRight() {
-        this.NextState=HumanState.WALK_FORWARD;
-        this.X += this.speed * horizontalSpeedMult;
+        if(this.IsAlive) {
+            this.NextState = HumanState.WALK_FORWARD;
+            this.X += this.speed * horizontalSpeedMult;
+        }
     }
 
 
@@ -134,17 +163,23 @@ public class Player extends Human {
     }
 
     public void AttackForward() {
-        this.NextState=HumanState.HITTING_RIGHT;
+        if(this.IsAlive) {
+            this.NextState = HumanState.HITTING_RIGHT;
+            this.X += this.speed * horizontalSpeedMult;
+        }
     }
 
-    public int GetXSpeed(){
+    public float GetXSpeed(){
         return this.speed * horizontalSpeedMult;
     }
-    public int GetYSpeed(){
+    public float GetYSpeed(){
         return this.speed * verticalSpeedMult;
     }
     public void AttackBackward() {
-        this.NextState=HumanState.HITTING_LEFT;
+        if(this.IsAlive) {
+            this.NextState = HumanState.HITTING_LEFT;
+            this.X -= this.speed * horizontalSpeedMult;
+        }
     }
 
     public int getWidth() {

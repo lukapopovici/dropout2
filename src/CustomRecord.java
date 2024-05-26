@@ -1,15 +1,28 @@
 public class CustomRecord {
-    private String label;
-    private String data1;
-    private String data2;
+    private String date;
+    private int score;
+    private String layout;
 
-    public CustomRecord(String label, String data1, String data2) {
-        this.label = label;
-        this.data1 = data1;
-        this.data2 = data2;
+    public CustomRecord(String date,int score, String layout) {
+        this.date = date;
+        this.score = score;
+        this.layout = layout;
     }
 
-    public String getLabel() {
-        return label;
+    public String getDate() {
+        return date;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getLayout() {
+        return layout;
+    }
+
+    @Override
+    public String toString() {
+        return "Date: " + date + ", Score: " + score + ", Layout: " + layout;
     }
 }
