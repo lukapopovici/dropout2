@@ -70,7 +70,6 @@ abstract public class Human implements Entity{
 
     public abstract void WasTouched(Entity e);
 
-    public abstract void Delete();
 
     public void KillMe(){
         IsAlive=false;

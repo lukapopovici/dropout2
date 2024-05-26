@@ -1,3 +1,6 @@
+
+//CLASA PENTRU STRATEGIA INAMICILOR CARE DESCRIE BEHAVIORUL DE "URMARESTE JUCATORUL"
+
 public class FollowPlayer implements Startegie {
     @Override
     public void move(Enemy enemy, int targetX, int targetY) {

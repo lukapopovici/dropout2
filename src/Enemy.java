@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+//CLASA PENTRU INAMICUL BASIC
 
 public class Enemy extends Human {
     private int TargetX, TargetY;
@@ -121,11 +122,6 @@ public class Enemy extends Human {
         if (e instanceof Consumable){
             this.speed*=2;
         }
-    }
-
-    @Override
-    public void Delete() {
-        // Implement if necessary
     }
 
     public void SetTargetLocation(int x, int y) {

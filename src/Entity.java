@@ -1,5 +1,5 @@
 import java.awt.*;
-
+//INTERFATA PENTRU OBIECTELE REPREZENTABILE IN ARENA
 public interface Entity {
     int DrawPriority=0;
     int GetDrawPriority();
@@ -9,5 +9,4 @@ public interface Entity {
     public int getHeight();
     int getX();
     void WasTouched(Entity e);
-    void Delete();
 }

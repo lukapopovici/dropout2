@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+//CLASA PENTRU INAMIC SPEEDER. PRIORITIZEAA POWERUPURILE, E MAI RAPID DECAT INAMICUL NORMAL SI POATE SA CONSUME POWER UPURI PENTRU A LUA VITEZA
 
 public class Enemy2 extends Enemy {
     private int TargetX, TargetY;
@@ -118,11 +119,6 @@ public class Enemy2 extends Enemy {
         if (e instanceof Player) {
             KillMe();
         }
-    }
-
-    @Override
-    public void Delete() {
-        // Implement if necessary
     }
 
     public void SetTargetLocation(int x, int y) {

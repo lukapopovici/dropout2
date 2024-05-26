@@ -48,7 +48,7 @@ public class SQLiteDBCreator {
             pstmt.executeUpdate();
         }
     }
-
+//PENTRU TEST SI VIZUALIZARE LA LABORATOR
     public synchronized void displayAllRecords() throws SQLException {
         String sql = "SELECT * FROM Ranking";
         try (Statement stmt = conn.createStatement();
@@ -76,7 +76,7 @@ public class SQLiteDBCreator {
         }
     }
 
-
+//PENTRU A AFISA UN NUMAR LIMITAT PE LOAD MENU DE SALVARI
     public List<CustomRecord> getLastFiveCustomRecords() throws SQLException {
         List<CustomRecord> lastFiveRecords = new ArrayList<>();
         String sql = "SELECT * FROM Ranking ORDER BY id DESC LIMIT 5";

@@ -1,6 +1,8 @@
 import java.util.List;
-
+//CLASA IN CARE AM ALES SA ENCAPSULEZ ORICE LEGAT DE COLIZIUNI
+//INSTANTIATA IN ARENA
 public class CollisionManager {
+    //COLIZIUNE INTRE DOUA OBIECTE BAZAT PE COORDONATE
         public static boolean checkCollision(int playerX, int playerY, int playerWidth, int playerHeight, int obstacleX, int obstacleY, int obstacleWidth, int obstacleHeight) {
             int playerBottomY = playerY + playerHeight;
             int obstacleBottomY = obstacleY + obstacleHeight;
@@ -10,7 +12,7 @@ public class CollisionManager {
                     playerY < obstacleBottomY &&
                     playerBottomY > obstacleY);
         }
-
+        //COLIZIUNEA INTRE JUCATOR SI ORICE OBSTACOL DIN ARENA DAT CA PARAMETRU
         public static boolean doesCollide(List<Obstacle> obstacles, int playerX, int playerY, int playerWidth, int playerHeight) {
             for (Obstacle tile : obstacles) {
                 if (!(tile instanceof FogOFWar)) {
@@ -22,6 +24,8 @@ public class CollisionManager {
             }
             return false;
         }
+    //COLIZIUNEA INTRE JUCATOR SI ORICE CONSUMABILA DIN ARENA DAT CA PARAMETRU
+
     public static boolean doesConsumCollide(List<Consumable> cons,  Player p) {
         int playerX=p.getX();
         int playerY=p.getY();
@@ -36,6 +40,7 @@ public class CollisionManager {
             }
         return false;
     }
+    //COLIZIUNEA DINTRE CEI DOI JUCATORI
     public static boolean doesPlayerCollide(Player p1,  Player p2) {
         int playerX=p1.getX();
         int playerY=p2.getY();
@@ -49,7 +54,9 @@ public class CollisionManager {
         return false;
     }
 
-        public static boolean doesEnemyCollide(List<Enemy> enemies, Player p) {
+    //COLIZIUNEA INTRE JUCATOR SI ORICE INAMIC DIN ARENA DAT CA PARAMETRU
+
+    public static boolean doesEnemyCollide(List<Enemy> enemies, Player p) {
             int playerX=p.getX();
             int playerY=p.getY();
             int playerWidth=p.getWidth();;
@@ -63,6 +70,8 @@ public class CollisionManager {
             }
             return false;
         }
+    //COLIZIUNEA INTRE ORICE INAMIC SI ORICE CONSUMABILA DIN ARENA
+
     public static boolean doesEnemyCollideWithConsumable(List<Enemy> enemies, List<Consumable> consumables) {
         for (Enemy enemy : enemies) {
             for (Consumable consumable : consumables) {

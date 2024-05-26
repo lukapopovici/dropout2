@@ -1,5 +1,5 @@
 import java.awt.*;
-
+//FUNCTII PENTRU CLASA BUTON, INSTANTIATA IN MENIURI
 class Button {
     private String label;
     private int x, y, width, height;

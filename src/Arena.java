@@ -9,11 +9,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+//SINGLETONUL CARE DESCRIE JOCUL IN SINE CU PERSONAJELE CARE SE MISCA
 public class Arena extends JPanel implements Screen{
     private static Arena instance;
     private int width;
     private int currentLineIndex = 0;
     private int height;
+    ConcretePlayerFactory playerFactory = new ConcretePlayerFactory();
     private List<Player> players;
     private List<Consumable> consumables;
     private List<Enemy> enemies;
@@ -37,13 +39,14 @@ public class Arena extends JPanel implements Screen{
         players = new ArrayList<>();
         enemies = new ArrayList<>();
         consumables = new ArrayList<>();
-        consumables.add(new Consumable(400,300));
         obs = new ArrayList<>();
         GetLevelLayout("Levels/LEVEL1");
+        //DAU LA FOG OF WAR COORDONATELE JUCATORULUI CARE POATE SA O DISPERSEZE
         FogOFWar.SetPlayerWH(playerOne.getWidth(),playerOne.getHeight());
         startTimer();
     }
 
+    //FUNCTII SPECIFICE PENTRU SINGLETON
     public static Arena getInstance() {
         return instance;
     }
@@ -55,16 +58,17 @@ public class Arena extends JPanel implements Screen{
         return instance;
     }
 
+    //TRY-CATCH-THROW PENTRU ASSIGNAREA JUCATORILOR (VERIFIC SECOND PLAYER / FIRST PLAYER E GARANTAT)
     public void assignPlayers() {
         try {
             if (players.isEmpty()) {
                 throw new Exception("No players available to assign");
             }
 
-            playerOne = players.get(0); // Assign the first player
+            playerOne = players.get(0);
 
             if (players.size() > 1) {
-                playerTwo = players.get(1); // Assign the second player if available
+                playerTwo = players.get(1);
             } else {
                 playerTwo = null;
                 throw new Exception("PlayerTwo is not available");
@@ -75,6 +79,7 @@ public class Arena extends JPanel implements Screen{
         }
     }
 
+    //CONDITIE PE BAZA CARUIA AVANSEZ NIVELUL
     public void checkEnemyListEmpty() {
         if (enemies.isEmpty()) {
             if (currentLineIndex < 2) {
@@ -87,6 +92,7 @@ public class Arena extends JPanel implements Screen{
         }
     }
 
+    //VERIFIC CONDITIA DE GAME OVER / GAME ADVANCE SAU WIN
     private void startTimer() {
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -104,9 +110,9 @@ public class Arena extends JPanel implements Screen{
     public int getLevelIndex() {
         return currentLineIndex;
     }
+    //PENTRU CONSTRUIT NIVELUL IN MOD NORMAL + AVANS
     public void GetLevelLayout(String fileName) {
         cleanMapOfAll();
-        enemies.add(new Enemy2(200, 800));
         //de encapsulat in alta functie
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -138,7 +144,7 @@ public class Arena extends JPanel implements Screen{
                                     obs.add(new FogOFWar(x, y));
                                     break;
                                 case "P":
-                                    players.add(new Player(x, y));
+                                    players.add(playerFactory.create(x, y));
                                     break;
                                 case "C":
                                     consumables.add(new Consumable(x, y));
@@ -182,6 +188,7 @@ public class Arena extends JPanel implements Screen{
         assignPlayers();
     }
 
+    //PENTRU SALVAT IN BAZA DE DATE
     public String BuildLevelLayout() {
         StringBuilder levelLayout = new StringBuilder();
 
@@ -220,10 +227,10 @@ public class Arena extends JPanel implements Screen{
         return levelLayout.toString();
     }
 
+    //FOLOSIT LA LOAD GAME (IAU DIN BAZA DE DATE)
     public void GetLevelLayoutFromString(String levelLayout) {
         System.out.println(levelLayout);
         cleanMapOfAll();
-        enemies.add(new Enemy2(200,800));
         String[] groups = levelLayout.split("\\+");
         for (String group : groups) {
             String[] parts = group.split("/");
@@ -249,7 +256,7 @@ public class Arena extends JPanel implements Screen{
                         obs.add(new FogOFWar(x, y));
                         break;
                     case "P":
-                        players.add(new Player(x, y));
+                        players.add(playerFactory.create(x, y));
                         break;
                     case "C":
                         consumables.add(new Consumable(x, y));
@@ -287,10 +294,12 @@ public class Arena extends JPanel implements Screen{
         assignPlayers();
     }
 
+
     public void cleanMapOfAll() {
         players.clear();
         enemies.clear();
         obs.clear();
+        consumables.clear();
     }
 
     public void cleanupDead() {
@@ -368,6 +377,7 @@ public class Arena extends JPanel implements Screen{
         g.fillRect(0, 0, width, height);
     }
 
+    //OBSERVER PENTRU ENEMY AI / UPDATE PENTRU FIECARE FRAME
     private void UpdateEnemies(){
         NotifyEnemies();
         for (Enemy enemy : enemies) {
@@ -375,6 +385,7 @@ public class Arena extends JPanel implements Screen{
         }
     }
 
+    //UPDATEZ AI-UL IN FUNCTIE DE TIPUL INAMICULUI
     public void NotifyEnemies() {
         for (Enemy enemy : enemies) {
             Player closestPlayer = findClosestPlayer(enemy);
@@ -391,6 +402,7 @@ public class Arena extends JPanel implements Screen{
         }
     }
 
+    //SELF EXPLENATORY
     private Player findClosestPlayer(Enemy enemy) {
         Player closestPlayer = null;
         double minDistance = Double.MAX_VALUE;
@@ -404,7 +416,7 @@ public class Arena extends JPanel implements Screen{
         }
         return closestPlayer;
     }
-
+    //SELF EXPLENATORY
     private Consumable findClosestConsumable(Enemy enemy) {
         Consumable closestConsumable = null;
         double minDistance = Double.MAX_VALUE;
@@ -418,7 +430,7 @@ public class Arena extends JPanel implements Screen{
         }
         return closestConsumable;
     }
-
+    //SELF EXPLENATORY
     private double calculateDistance(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
@@ -503,7 +515,7 @@ public class Arena extends JPanel implements Screen{
             System.out.println(e.getMessage());
         }
     }
-
+    //VERIFIC COLIZIUNILE APELAND FUNCTII DIN COLLISION MANAGER
     private void CheckInteractions() {
         CollisionManager.doesEnemyCollide(enemies, playerOne);
 
@@ -549,6 +561,7 @@ public class Arena extends JPanel implements Screen{
         FogOFWar.SetPLayerPos(playerOne.getX(),playerOne.getY());
         MakeWeakFear();
     }
+    //PENTRU CAND INAMICII DE TIP 1 AU NUMAR REDUS
     void MakeWeakFear(){
         if(enemies.size()==1){
             for (Enemy enemy : enemies) {
@@ -558,6 +571,7 @@ public class Arena extends JPanel implements Screen{
                 }
         }
     }
+    //FUNCTII PENTRU STATE
     @Override
     public State ReturnState() {
             return Altered;

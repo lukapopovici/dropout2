@@ -1,6 +1,6 @@
 import java.awt.*;
 
-// Assuming Entity interface is defined somewhere with the methods mentioned
+// CLASA PENTRU TOATE CONSUMABILELE
 public class Consumable implements Entity {
     private int x;
     private int y;
@@ -8,7 +8,6 @@ public class Consumable implements Entity {
     private final int height = 10;
     private boolean hasBeenTouched = false;
 
-    // Constructor to initialize x and y coordinates
     public Consumable(int x, int y) {
         this.x = x;
         this.y = y;
@@ -53,12 +52,8 @@ public class Consumable implements Entity {
         }
     }
 
-    @Override
-    public void Delete() {
-        // Implement deletion behavior
-    }
 
-    // Getter method for hasBeenTouched variable
+
     public boolean hasBeenTouched() {
         return hasBeenTouched;
     }

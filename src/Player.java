@@ -95,6 +95,7 @@ public class Player extends Human {
             CurrentState = NextState;
         }
     }
+    //PENTRU A REPREZENTA REZULTATUL INTERACTIUNI JUCATORULUI CU ALTE ENTITATI DIN ARENA
     @Override
     public void WasTouched(Entity e) {
         if (e instanceof Enemy) {
@@ -117,10 +118,6 @@ public class Player extends Human {
     }
 
 
-
-    @Override
-    public void Delete() {
-    }
 
     public void MoveUp() {
         if(this.IsAlive) {

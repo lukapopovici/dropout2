@@ -1,3 +1,4 @@
+//STRATEGIE PENTRU A FUGI DE JUCATOR FOLOSITA DE CLASA INAMIC (ENEMY)
 public class RunFromPlayer implements Startegie {
     int arenaWidth = Arena.getInstance().getWidth();
     int arenaHeight = Arena.getInstance().getHeight();

@@ -1,3 +1,5 @@
+//ADT PENTRU BAZA DE DATE
+//STOCHEZ CURRENT ITME PENTRU DISPLAYED NAME IN MENIUL DE LOAD / SCORE SI LAYOUTUL E MAPA SERIALIZATA
 public class CustomRecord {
     private String date;
     private int score;

@@ -105,9 +105,8 @@ public class GameOverMenu extends JPanel implements Menu {
     }
 
     public void Update() {
-        // No implementation required as of now.
     }
-
+//FOLOSIT PENTRU A SCIE "YOU WON/YOU LOST" BAZAT PE REZULTAT
     public void SetText(String Result) {
         this.displayText=Result;
     }
