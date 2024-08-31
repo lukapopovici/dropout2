@@ -18,6 +18,8 @@ After eliminating all zombies on a level, the player advances to the next. The g
 
 ## Technology Used
 
+For this project I used Java AWT (for the gameplay part), Java Swing (for the menus, obviously) and SQLite for managing the "SAVES" database.
+
 ## Class Diagram w/ notable classes
 
 ![image1](https://github.com/user-attachments/assets/9a531c92-8ec7-4126-a695-6193b21ca200)
@@ -26,10 +28,22 @@ After eliminating all zombies on a level, the player advances to the next. The g
 
 ## Notable Design Patterns Used
 
+## State
+
+Everything, from the **GAME** class itself to the **MENU-type** classes and the **ENTITY-type** classes (players and enemies) uses the State pattern. It's pretty self explainatory as to why I need to use it on the player and enemies. The menus make use of it to be able to switch between them more easily, and manipulate the state of the **GAME** class itself.
+
+![image](https://github.com/user-attachments/assets/833661dc-2360-4287-ace4-209037b2a01b)
+
+
 ### Singleton
+
+Most menus (most notably the LOAD GAME MENU) are singletons. This allows me to "initialize" them only when the game starts, and that makes the transition when calling them smoother as they always exist, and when I change the state of the game I simply change what is displayed.
 
 ### (Abstract) Factory
 
+### Observer
+
 ### Strategy
 
-### Observer
+A particular type of Zombie changes the 
+
