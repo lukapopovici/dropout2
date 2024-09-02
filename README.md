@@ -1,5 +1,5 @@
 # dropout2
-> It was more fun to make than it is to actually play this garbage.
+> It was more fun to make than it is to actually play this garbage (the code is actually good tho)
 
 ## Concept, Gameplay and Controls
 Sequel to DROPOUT written in Java.
@@ -40,7 +40,7 @@ Everything, from the **GAME** class itself to the **MENU-type** classes and the 
 
 ### Singleton
 
-Most menus (most notably the LOAD GAME MENU) are singletons. This allows me to "initialize" them only when the game starts, and that makes the transition when calling them smoother as they always exist, and when I change the state of the game I simply change what is displayed.
+Most menus (most notably the LOAD GAME MENU) are singletons. This allows me to "initialize" them only when the game starts, and that makes the transition when calling them smoother as they always exist, and when I change the state of the game I simply change what is displayed. The Arena where th gameplay itself takes place in is also a Singleton.
 
 ### (Abstract) Factory
 
@@ -48,7 +48,8 @@ As this is just a creational pattern I see no need to explain it's usage within 
 
 ### Observer
 
-Observer is 
+Th Observer can be used pretty loosely without breaking he pattern, and I used it aplenty. But the most notable usage of his partiular pattern is the Enemy AI update function.
+The Arena of the game, as menioned above, is a Singleton. All the instances of the **Enemy**-derived classes are being kept in a list, and I use **UpdateEnemies** at each call of the big **Update** function to Notify the enemy instances of the player locations and change their position according to it.
 
 ### Strategy
 
@@ -72,3 +73,9 @@ The database is a simple table with four fields:
 ## Singleton Class: `SQLiteDBCreator`
 
 The database itself is accessed and, if necessary, initialized in a Singleton class called `SQLiteDBCreator`.
+
+## Assests
+
+They are all taken from here somewhere idc tbf (unimportant):
+
+https://craftpix.net/
