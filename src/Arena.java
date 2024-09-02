@@ -277,7 +277,6 @@ public class Arena extends JPanel implements Screen{
                 }
                 switch (letter) {
                     case "T":
-                        System.out.println("asdasdASSSSSSSSSSSSSS");
                         obs.add(new Obstacle(x2, y2, x1, y1));
                         break;
                     case "F":

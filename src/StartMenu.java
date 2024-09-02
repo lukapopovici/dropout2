@@ -94,7 +94,6 @@ public class StartMenu extends JPanel implements Menu {
             Over=false;
     }
     public State ReturnState() {
-        System.out.println(Altered);
         return Altered;
     }
 

@@ -70,7 +70,6 @@ public class PauseMenu extends JPanel implements Menu {
         SetOverTrue();
         switch (action) {
             case "Resume":
-                System.out.println("sadasd");
                 Altered=State.GAME;
                 break;
             case "Save Game":
@@ -79,11 +78,9 @@ public class PauseMenu extends JPanel implements Menu {
                 Altered=State.GAME;
                 break;
             case "Load Game":
-                System.out.println("sadasd");
                 Altered=State.LOAD;
                 break;
             case "Quit":
-                System.out.println("sadasd");
                 Altered=State.QUIT;
                 break;
         }
@@ -110,7 +107,6 @@ public class PauseMenu extends JPanel implements Menu {
 
 
     public State ReturnState() {
-        System.out.println(Altered);
         return Altered;
     }
 
