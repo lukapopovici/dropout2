@@ -1,4 +1,5 @@
 # dropout2
+> It was more fun to make than it is to actually play this garbage.
 
 ## Concept, Gameplay and Controls
 Sequel to DROPOUT written in Java.
@@ -12,6 +13,8 @@ The player has vertical and horizontal mobility (using the WASD keys) and can us
 The player also controls a support medic character (using the UP, DOWN, LEFT, RIGHT keys) who cannot attack but can revive players through physical contact if they are immobilized.
 
 After eliminating all zombies on a level, the player advances to the next. The game is won after all the zombies on the final level are defeated.
+
+It also has an implemented Fog of War mechanic.
 
 ![image](https://github.com/user-attachments/assets/bf30fe28-744f-4a91-b14b-2962ebfec19c)
 
@@ -41,9 +44,31 @@ Most menus (most notably the LOAD GAME MENU) are singletons. This allows me to "
 
 ### (Abstract) Factory
 
+As this is just a creational pattern I see no need to explain it's usage within the context of this project.
+
 ### Observer
+
+Observer is 
 
 ### Strategy
 
-A particular type of Zombie changes the 
+A particular type of Zombie changes the it's objective based on how many instances of enemies are in the arena at the time. Once the number drop under a hardcoded threshhold, said type of Zombie will flee from the player instead of following it.
 
+This functionality was implemented usig the Strategy pattern a shown in the diagrams below.
+## Datebase functonality
+
+![image](https://github.com/user-attachments/assets/5c00f970-cd30-4315-8dd2-179fd18a6986)
+
+
+## Database Structure
+
+The database is a simple table with four fields:
+
+1. **Index**: A unique identifier for each record.
+2. **ID**: Generated based on the current time at the moment of saving.
+3. **Map Generation Seed**: Used to generate the map.
+4. **Stage Number**: The current stage number that the player is at.
+
+## Singleton Class: `SQLiteDBCreator`
+
+The database itself is accessed and, if necessary, initialized in a Singleton class called `SQLiteDBCreator`.
